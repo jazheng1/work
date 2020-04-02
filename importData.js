@@ -20,6 +20,7 @@ let covidInfo = getData('./data/states.json');
 async function importData(data) {
   return await Covid.query().insertGraph(data.map((covidData) => {
     return {
+      report_date: covidData. ,
       state: covidData.state,
       positive: covidData.positive,
       negative: covidData.negative,

@@ -22,7 +22,7 @@ class Covid extends Model {
       //   'date', 'state'
       // ],
       properties: {
-        // date: { type: 'date' },
+        report_date: { type: 'date' },
         state: { type: 'string', minLength: 1 },
         positive: { type: ['integer', 'null']},
         negative: { type: ['integer', 'null']},
