@@ -15,7 +15,6 @@ if (!process.env.NODE_ENV) {
 }
 
 // app.use(express.static('public'));
-app.use(express.static('public'));
 app.set('view engine', 'hbs');
 app.engine('hbs', handlebars({
   extname: 'hbs',
