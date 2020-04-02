@@ -14,6 +14,8 @@ if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = app.get('env');
 }
 
+// app.use(express.static('public'));
+app.use(express.static('public'));
 app.set('view engine', 'hbs');
 app.engine('hbs', handlebars({
   extname: 'hbs',
@@ -22,8 +24,7 @@ app.engine('hbs', handlebars({
 
 app.get('/', (req, res) => {
   res.render('index', {
-    title:'Periodt pooh',
-    layout: false
+    title:'Periodt pooh'
   });
 })
 // A helper to generate directory paths relative to the
