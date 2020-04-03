@@ -1,41 +1,33 @@
 let Router = require('express-promise-router');
+let router = new Router();
+
 let getData = require('./research/getData');
 let Covid = require('./models/covid');
-let { ValidationError } = require('objection');
-let info = require('./research/getData')
-let router = new Router();
-let raw = require('./data/states.json')
-// GET /
-router.get('/', async(request, response) => {
-  // let messages = await Message.query().select('*').orderBy('created_at', 'DESC');
-  let messages = raw;
-  response.render('index', { messages });
+
+let { Client } = require('pg');
+const client  = new Client({
+  port:3000,
+  database: 'covid_development',
 });
 
-// POST /messages
-router.post('/messages', async(request, response) => {
-  let message = raw;
-  response.render('index', { message});
-  let messageBody = request.body.body;
-  let messageTime = new Date();
+router.get('/', async(request, response) => {
+  let data = getData('./data/state.json')
 
-  try {
-    await Message.query().insert({
-      body: messageBody,
-      createdAt: messageTime,
-    });
+  console.log(data);
 
-    response.redirect('/');
-  } catch(error) {
-    if (error instanceof ValidationError) {
-      let messages = await Message.query().select('*').orderBy('created_at', 'DESC');
-      let errors = error.data;
+  response.render('index', {data});
+});
 
-      response.render('index', { messages, errors });
-    } else {
-      throw error;
-    }
-  }
+router.get('/', async(request, response) => {
+  let searchTerm = $('#state-selector').change(function() {
+  let selectedState = $(this).val();
+  let dataId = `state-data-${selectedState.toLowerCase()}`;
+  })
+
+  let data = await client.query()
+    .where('state', searchTerm);
+
+  response.render('state', { data });
 });
 
 module.exports = router;
